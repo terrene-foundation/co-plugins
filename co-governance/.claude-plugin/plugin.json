@@ -1,0 +1,13 @@
+{
+  "name": "co-governance",
+  "version": "1.0.0",
+  "description": "CO for Governance (COG) - Cognitive Orchestration for organizational self-governance. The Foundation governs itself using this. Constitutional compliance, RFC processes, membership management, and transparency reporting.",
+  "author": {
+    "name": "Terrene Foundation",
+    "url": "https://terrene.foundation"
+  },
+  "homepage": "https://terrene.foundation/standards/co/",
+  "repository": "https://github.com/terrene-foundation/co-governance",
+  "license": "Apache-2.0",
+  "keywords": ["cognitive-orchestration", "CO", "governance", "constitution", "RFC", "transparency", "compliance", "self-hosting"]
+}

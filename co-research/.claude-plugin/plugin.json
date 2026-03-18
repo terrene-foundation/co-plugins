@@ -1,0 +1,13 @@
+{
+  "name": "co-research",
+  "version": "1.0.0",
+  "description": "COR (Cognitive Orchestration for Research) - structured human-AI co-authorship for academic publications. Maintains citation integrity, prevents fabrication, preserves authentic voice, and produces work that withstands peer review.",
+  "author": {
+    "name": "Terrene Foundation",
+    "url": "https://terrene.foundation"
+  },
+  "homepage": "https://terrene.foundation/standards/co/",
+  "repository": "https://github.com/terrene-foundation/co-research",
+  "license": "Apache-2.0",
+  "keywords": ["research", "academic", "co-authorship", "cognitive-orchestration", "COR", "writing", "citations"]
+}

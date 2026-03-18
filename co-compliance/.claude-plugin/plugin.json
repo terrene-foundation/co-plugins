@@ -1,0 +1,13 @@
+{
+  "name": "co-compliance",
+  "version": "1.0.0",
+  "description": "CO for Regulatory Compliance (COComp) - Structured human-AI collaboration for analyzing regulations, mapping requirements to controls, identifying gaps, producing compliance reports, and preparing for audits.",
+  "author": {
+    "name": "Terrene Foundation",
+    "url": "https://terrene.foundation"
+  },
+  "homepage": "https://terrene.foundation/standards/co/",
+  "repository": "https://github.com/terrene-foundation/co-compliance",
+  "license": "Apache-2.0",
+  "keywords": ["cognitive-orchestration", "CO", "compliance", "regulatory", "audit", "GRC"]
+}

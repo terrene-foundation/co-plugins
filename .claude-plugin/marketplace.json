@@ -1,0 +1,38 @@
+{
+  "name": "co-plugins",
+  "owner": {
+    "name": "Terrene Foundation"
+  },
+  "plugins": [
+    {
+      "name": "co-research",
+      "source": "./co-research",
+      "description": "CO for Research (COR). Co-author academic papers with AI. Citation integrity, literature synthesis, hostile reviewer simulation, two co-authorship modes."
+    },
+    {
+      "name": "co-finance",
+      "source": "./co-finance",
+      "description": "CO for Finance (COF). Financial analysis and education. Study guides, case analysis, exam preparation, research papers, course-specific tutors."
+    },
+    {
+      "name": "co-education",
+      "source": "./co-education",
+      "description": "CO for Education (COE). Design assessments and rubrics that account for AI use. Instructor-side tools for GenAI-aware pedagogy."
+    },
+    {
+      "name": "co-governance",
+      "source": "./co-governance",
+      "description": "CO for Governance (COG). Organizational self-governance. Constitutional compliance, RFC processes, transparency reporting. The Foundation governs itself using this."
+    },
+    {
+      "name": "co-compliance",
+      "source": "./co-compliance",
+      "description": "CO for Compliance (COComp). Regulatory analysis. Requirement extraction, control mapping, gap assessment, audit preparation."
+    },
+    {
+      "name": "co-template",
+      "source": "./co-template",
+      "description": "CO Template. Build your own CO application for any professional domain. Provides the five-layer structure, example agents, and workflow commands."
+    }
+  ]
+}

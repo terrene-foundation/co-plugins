@@ -1,0 +1,13 @@
+{
+  "name": "co-education",
+  "version": "1.0.0",
+  "description": "CO for Education (COE) - Cognitive Orchestration for university teaching, assessment design, and GenAI-aware pedagogy. Helps instructors design courses, assessments, and rubrics that account for AI use.",
+  "author": {
+    "name": "Terrene Foundation",
+    "url": "https://terrene.foundation"
+  },
+  "homepage": "https://terrene.foundation/standards/co/",
+  "repository": "https://github.com/terrene-foundation/co-education",
+  "license": "Apache-2.0",
+  "keywords": ["cognitive-orchestration", "CO", "education", "assessment", "pedagogy", "GenAI", "rubrics", "teaching"]
+}

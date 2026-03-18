@@ -1,0 +1,13 @@
+{
+  "name": "co-finance",
+  "version": "1.0.0",
+  "description": "COF (Cognitive Orchestration for Finance) - AI-assisted finance education and analysis. Academic companion for undergraduate and graduate finance students with tutors, case study analysis, exam preparation, and research support.",
+  "author": {
+    "name": "Terrene Foundation",
+    "url": "https://terrene.foundation"
+  },
+  "homepage": "https://terrene.foundation/standards/co/",
+  "repository": "https://github.com/terrene-foundation/co-finance",
+  "license": "Apache-2.0",
+  "keywords": ["finance", "education", "cognitive-orchestration", "COF", "tutoring", "academic", "FMI"]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "co-template",
+  "version": "1.0.0",
+  "description": "CO Template - Cognitive Orchestration for [Your Domain]. Replace this description with your domain application's purpose.",
+  "author": {
+    "name": "Your Name",
+    "url": "https://your-url.com"
+  },
+  "homepage": "https://terrene.foundation/standards/co/",
+  "repository": "https://github.com/your-org/your-co-repo",
+  "license": "Apache-2.0",
+  "keywords": ["cognitive-orchestration", "CO", "your-domain"]
+}
