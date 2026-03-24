@@ -1,75 +1,88 @@
 ---
 name: write-para
-description: AI drafts a paragraph with margin notes; author must approve before moving on
-arguments:
-  - name: intent
-    description: What this paragraph should accomplish in the argument
-    required: true
+description: "Draft a paragraph together through deliberation. Present, discuss, refine. Author approves every paragraph."
 ---
 
-# /write-para $intent
+## What This Command Does (present to user)
 
-You are drafting a paragraph that should accomplish: **$intent**
+We write one paragraph together. You describe what the paragraph should accomplish. I draft it with annotations explaining every choice, present alternatives for key phrases, and explain the literature behind the argument. You approve, modify, or reject. Nothing gets written without your explicit approval.
 
-This is the AI-drafts mode. You write the paragraph with inline margin notes explaining every structural choice. The author reviews, edits, and must explicitly approve before you move on.
+## Your Role (communicate to user)
 
-## Protocol
+This is the most important command — your judgment drives the process. Tell me what the paragraph should say. I'll draft it with margin notes. You decide if it works. Push back on anything that doesn't sound like you or that you don't fully understand.
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load context**: Read the paper brief, existing drafts in `03-drafts/versions/`, relevant decision records, and the current section's preceding paragraphs
-3. **Check voice**: Read existing approved paragraphs to match the author's established voice, register, and style
+## Workspace Resolution
 
-## Drafting Requirements
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store deliberation in `workspaces/<project>/03-drafts/deliberation/`
+4. Store draft versions in `workspaces/<project>/03-drafts/versions/`
 
-### Margin Notes
-Every draft paragraph MUST include inline annotations in [MARGIN: ...] format explaining:
-- Why this sentence is here
-- Why this word/phrase was chosen over alternatives
-- How this connects to the broader argument
-- What a reviewer might think of this
+## Workflow
 
-### Writing Style
-Follow all rules in `rules/academic-writing-style.md`:
-- No em dashes
-- No AI-signature words
-- Vary sentence length
-- Active voice for author claims
-- First person for the author's contributions
-- Domain-specific vocabulary
-- Allow natural roughness
+### 1. Understand intent
 
-### Alternatives
-For at least 2 key decisions in the paragraph, present alternatives:
-- "Alternative A: [different phrasing] -- [why you might prefer this]"
-- "Alternative B: [different phrasing] -- [why you might prefer this]"
+Parse `$ARGUMENTS` for the paragraph intent. Read the surrounding context:
 
-## Author Approval Gate
+- What section is this paragraph in?
+- What came before? What comes after?
+- What argument does this paragraph need to make?
 
-After presenting the draft:
+### 2. Draft with annotations
 
-1. Ask if the paragraph accomplishes its intent
-2. Ask if the voice matches the rest of the paper
-3. Ask if any margin note decisions should be changed
-4. **Do NOT proceed to the next paragraph without explicit approval**
+Delegate to **writing-partner**. The draft must include:
 
-## Delegation
+- **The paragraph** — Clean, publication-ready prose
+- **Margin notes** — Why this opening, why this citation placement, why this word choice
+- **Alternatives** — 2-3 options for the opening sentence or key phrasing
+- **Citation rationale** — Why each source is cited where it is
+- **Teaching note** — If the paragraph uses a concept the author may not fully know, explain it
 
-Spawn the **writing-partner** agent for the drafting work.
+### 3. Present to user
 
-## Journal Entry
+Show the draft with all annotations. Ask:
 
-Produce a MARGIN journal entry in the workspace's `journal/` directory:
+- "Does this say what you want it to say?"
+- "Is anything unclear or doesn't sound like you?"
+- "Do you understand the literature behind each sentence?"
 
-```yaml
----
-type: MARGIN
-date: [today]
-paper: [paper name from brief]
-section: [current section]
-paragraph: [paragraph number]
-topic: $intent
-tags: [relevant tags]
----
-```
+### 4. Iterate
 
-Include: key decisions made, alternatives rejected, voice notes.
+If rejected: understand why, redraft.
+If partially approved: make specific changes.
+If approved: finalize.
+
+### 5. Record the decision
+
+Store a deliberation record:
+
+- What was decided about this paragraph
+- What alternatives were rejected and why
+- What teaching happened during the process
+
+Save in `workspaces/<project>/03-drafts/deliberation/<section>-<para-num>.md`.
+
+### 6. Journal all insights
+
+Create journal entries in `workspaces/<project>/journal/` for EVERY insight produced:
+
+- **MARGIN** entry: All margin notes (why this word, why this structure, why this citation)
+- **TEACH** entry: Any concept explained to the author during drafting
+- **CONNECTION** entry: Any cross-concept or cross-paper link identified
+- **CLAIM** entry: Any claim that needs future verification
+
+Use sequential naming: `NNNN-TYPE-topic.md`. Include frontmatter with type, date, paper, section, paragraph, topic, tags. These entries are the reusable knowledge trail for defense, presentations, and other materials.
+
+### 7. Update draft version
+
+Append the approved paragraph to the current draft version in `workspaces/<project>/03-drafts/versions/`.
+
+## Approval Gate
+
+FULL verification — every paragraph requires explicit author approval. This is a non-negotiable decision.
+
+## Agent Team
+
+- **writing-partner** — Primary: drafts with annotations
+- **field-expert** — Support: teaches concepts the paragraph draws on
+- **claims-verifier** — Support: verifies any claims in the paragraph

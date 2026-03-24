@@ -1,74 +1,102 @@
----
-name: checkpoint
-description: Review learning progress and journal entries
-arguments: []
----
+# /co-research:checkpoint - Learning Checkpoint Command
 
-# /checkpoint
+## Purpose
 
-Review your learning progress across the research project. This command surveys journal entries, decisions, and craft notes to show what you have learned and where gaps remain.
+Save and restore learning state checkpoints for the continuous learning system.
 
-## Protocol
+## Quick Reference
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Read all journal entries** from `journal/`
-3. **Read all decision records** from `03-drafts/deliberation/decisions/`
-4. **Read craft notes** from `craft-notes/`
-5. **Synthesize a progress report**
+| Command                    | Action                                |
+| -------------------------- | ------------------------------------- |
+| `/co-research:checkpoint`              | Show current checkpoint status        |
+| `/co-research:checkpoint save`         | Create new checkpoint                 |
+| `/co-research:checkpoint list`         | List all checkpoints                  |
+| `/co-research:checkpoint restore <id>` | Restore specific checkpoint           |
+| `/co-research:checkpoint diff <id>`    | Compare current state with checkpoint |
 
-## Report Contents
+## Usage Examples
 
-### Knowledge Map
-Group journal entries by topic and show coverage:
-- Which areas of the literature have been explored?
-- Which areas remain unexplored?
-- Which concepts has the author been taught about?
+### Save Checkpoint
 
-### Decision Trail
-List all structural decisions with their rationale:
-- What has been settled?
-- What remains open?
-- Are any prior decisions being contradicted by new information?
+```bash
+# Create a named checkpoint
+node scripts/learning/checkpoint-manager.js --save --name "before-refactor"
+```
 
-### Claim Status
-From CLAIM journal entries:
-- How many claims have been verified?
-- How many remain unverified?
-- Any FABRICATED or OVERCLAIMED findings outstanding?
+### List Checkpoints
 
-### Defense Readiness
-From DEFENSE journal entries:
-- What challenges have been raised?
-- Which have been addressed?
-- Which remain open vulnerabilities?
+```bash
+# Show all saved checkpoints
+node scripts/learning/checkpoint-manager.js --list
+```
 
-### Gap Analysis
-From GAP journal entries:
-- What gaps have been identified?
-- Which have been filled?
-- Which remain?
+### Restore Checkpoint
 
-### Writing Progress
-From MARGIN journal entries:
-- Which sections have been drafted?
-- Which paragraphs have been approved?
-- What is the current word count?
+```bash
+# Restore learning state from checkpoint
+node scripts/learning/checkpoint-manager.js --restore checkpoint_123
+```
 
-## Output Format
+### Compare States
+
+```bash
+# Show diff between current state and checkpoint
+node scripts/learning/checkpoint-manager.js --diff checkpoint_123
+```
+
+## What Gets Checkpointed
+
+| Component    | Included               |
+| ------------ | ---------------------- |
+| Observations | Last 100 entries       |
+| Instincts    | All personal instincts |
+| Stats        | Learning metrics       |
+| Identity     | System configuration   |
+
+## Checkpoint Structure
+
+Checkpoints are stored per-project:
 
 ```
-=== COR Checkpoint: [workspace] ===
-Date: [today]
-
-Knowledge coverage:
-  Explored: [topics]
-  Unexplored: [topics]
-
-Decisions: [N] settled, [N] open
-Claims: [N] verified, [N] outstanding
-Challenges: [N] raised, [N] resolved
-Gaps: [N] identified, [N] filled
-Sections drafted: [list]
-
-Recommendation: [what to focus on next]
+<project>/.claude/learning/checkpoints/
+├── checkpoint_<timestamp>.json
+├── pre-compact-<timestamp>.json   # Auto-created
+└── latest.json
 ```
+
+## Use Cases
+
+### Before Major Changes
+
+```bash
+# Save state before refactoring learning rules
+/co-research:checkpoint save --name "pre-refactor"
+# Make changes to instinct-processor.js
+# If issues arise:
+/co-research:checkpoint restore pre-refactor
+```
+
+### Team Sharing
+
+```bash
+# Export checkpoint for team member
+/co-research:checkpoint save --export team-baseline.json
+# Team member imports:
+/co-research:checkpoint restore --import team-baseline.json
+```
+
+### Auto-Checkpointing
+
+Checkpoints are automatically created:
+
+- **Before context compaction** (PreCompact hook) — saves learning state before context is compressed
+- Manual checkpoints via `/co-research:checkpoint save` are still available for on-demand snapshots
+
+## Related Commands
+
+- `/learn` - View learning status
+- `/evolve` - Evolve instincts
+
+## Skill Reference
+
+This command uses: `scripts/learning/observation-logger.js`, `scripts/learning/instinct-processor.js`

@@ -1,83 +1,74 @@
 ---
 name: challenge
-description: Hostile reviewer simulation - attacks from every angle, never says "this is fine"
-arguments:
-  - name: target
-    description: The section, argument, or full paper to challenge
-    required: true
+description: "Attack this argument from every angle. Be the hostile reviewer. Never says 'this is fine.'"
 ---
 
-# /challenge $target
+## What This Command Does (present to user)
 
-You are simulating a hostile peer reviewer attacking **$target**. Find every weakness, logical gap, unsupported claim, and vulnerability. Never say "this is fine."
+Simulates the most hostile reviewer your paper could face. Every weakness gets found. Every unsupported claim gets challenged. The goal is to make your arguments bulletproof before submission.
 
-## Protocol
+## Your Role (communicate to user)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load the target content**: Read the section or paper to be challenged
-3. **Load context**: Read the paper brief, target venue, and any prior challenge results
+Review the attacks. For FATAL findings, you must address them — no exceptions. For MAJOR, you should address them. For MINOR and STYLE, your call. For each attack, you can either fix the argument, strengthen the defense, or explain why the criticism doesn't apply.
 
-## Delegation
+## Workspace Resolution
 
-Spawn the **argument-critic** agent for adversarial analysis. The agent never approves without criticism.
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store results in `workspaces/<project>/04-validate/reviews/`
 
-## Attack Vectors
+## Workflow
 
-The argument-critic will systematically check:
+### 1. Parse target
 
-- **Novelty**: Has this been said before? What does this add?
-- **Scope**: Are the claims proportional to the evidence?
-- **Methodology**: Is the research approach appropriate? Are there stronger alternatives?
-- **Internal consistency**: Does the paper contradict itself across sections?
-- **Missing alternatives**: Are competing explanations acknowledged?
-- **Definitions**: Are key terms defined precisely?
-- **Audience fit**: Will the target venue's reviewers find this contribution sufficient?
-- **So what?**: Even if correct, does it matter?
+If `$ARGUMENTS` is a section (e.g., "Part III") — attack that section.
+If `$ARGUMENTS` is a quoted phrase — attack the argument around that phrase.
+If `$ARGUMENTS` is "full-paper" — attack the entire paper.
 
-## Reviewer Personas
+### 2. Deploy the critic
 
-Request specific reviewer types if needed:
-- **Methodology reviewer**: Research design, validity, generalizability
-- **Theory reviewer**: Theoretical grounding, contribution to knowledge
-- **Hostile competitor**: Work is derivative, unnecessary, or incorrect
-- **Practitioner reviewer**: Demands practical relevance
-- **Ethics reviewer**: Broader impacts, dual-use, fairness
+Delegate to **argument-critic** in reviewer simulation mode:
 
-## Output
+- Simulate a hostile reviewer at the target venue
+- Find every logical gap, unsupported leap, circular reasoning, missing qualification
+- Challenge the novelty claim
+- Question the evidence base
+- Attack the methodology
+- Probe the limitations section for gaps
 
-### Challenge Report
+### 3. Severity classification
 
-Store in `04-validate/reviews/` named `challenge-[target-slug].md`:
+Every finding gets classified:
 
-```markdown
-# Challenge Report: $target
-Date: [today]
-Reviewer persona: [type or general]
+- **FATAL** — Will cause desk rejection
+- **MAJOR** — Reviewer will require revision
+- **MINOR** — Could be stronger
+- **STYLE** — Preference, not substance
 
-## Critical Issues (desk rejection risk)
-[Issues that must be fixed]
+### 4. Store results
 
-## Major Issues (revision required)
-[Issues a reviewer will flag]
+Save attack report in `workspaces/<project>/04-validate/reviews/challenge-<date>.md`.
 
-## Minor Issues (worth fixing)
-[Issues that weaken the paper]
+### 5. Journal defenses
 
-## Defense Preparation
-[How to respond to each issue]
-```
+For each finding, create a DEFENSE journal entry in `workspaces/<project>/journal/NNNN-DEFENSE-<topic>.md`. Include:
+- The attack (what a reviewer would say)
+- The defense (how to respond)
+- Tags for the concept being attacked
+- Any GAP entries for weaknesses that need new literature or argument work
 
-## Journal Entry
+These DEFENSE entries become the author's preparation material for conference Q&A, viva, or reviewer responses.
 
-Produce a DEFENSE journal entry:
+### 6. Present to user
 
-```yaml
----
-type: DEFENSE
-date: [today]
-paper: [paper name from brief]
-section: $target
-topic: hostile review simulation
-tags: [relevant tags]
----
-```
+For each finding: the attack, why it matters, and a suggested defense. Ask: "Which of these do you want to address? FATAL findings must be fixed."
+
+## Approval Gate
+
+FATAL findings block further writing on the affected section. The author must decide how to respond before proceeding.
+
+## Agent Team
+
+- **argument-critic** — Primary: adversarial analysis
+- **field-expert** — Support: suggests defenses from the literature
+- **claims-verifier** — Support: verifies claims challenged by the critic

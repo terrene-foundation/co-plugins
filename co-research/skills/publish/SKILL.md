@@ -1,89 +1,167 @@
 ---
 name: publish
-description: Prepare for venue-specific submission (arXiv, SSRN, AIES, AI & Society, etc.)
-arguments:
-  - name: venue
-    description: Target venue (arXiv, SSRN, AIES, AI-Society, or other)
-    required: true
+description: "Prepare a publication for submission to any academic venue (arXiv, SSRN, AIES, AI & Society). Handles quality checks, format conversion, packaging, and submission guides."
 ---
 
-# /publish $venue
+## What This Command Does (present to user)
 
-You are preparing the paper for submission to **$venue**. This command handles venue-specific formatting, compliance checks, and packaging.
+Prepare a publication for submission to an academic venue. This handles the full lifecycle: quality checks against venue requirements, citation audit, format conversion, packaging, and step-by-step submission instructions. Works for arXiv, SSRN, AIES, AI & Society, and other venues.
 
-## Protocol
+For arXiv-specific work, this command subsumes `/co-research:arxiv` with additional multi-venue capabilities.
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load the paper** and verify preflight has been run (check for preflight report in `04-validate/reviews/`)
-3. **Apply venue-specific requirements**
+## Your Role (communicate to user)
 
-## Pre-Submission Gate
+You'll need to confirm: which paper, which venue, and any last-minute content decisions. Everything else is automated.
 
-Before proceeding, verify:
-- [ ] `/preflight` has been run and all critical issues resolved
-- [ ] `/check-refs` has been run and all issues resolved
-- [ ] Author has approved the final draft
+## Workspace Resolution
 
-If preflight has not been run, run it first.
+1. If `$ARGUMENTS` specifies a paper and/or venue, use that (e.g., `/co-research:publish arXiv`, `/co-research:publish SSRN`)
+2. If only a paper is specified, check the workspace brief for the target venue
+3. If nothing specified, show the paper status and ask
+4. Submission workspace: `workspaces/<project>/05-submit/<venue>/`
+5. For arXiv: use existing `workspaces/<project>/05-arxiv/` if it exists
 
-## Venue-Specific Requirements
+## Workflow
 
-### arXiv
+### 1. Paper and Venue Identification
 
-- **Format**: LaTeX source required (PDF-only may be declined)
-- **Abstract**: 150-300 words, plain text (no LaTeX formatting)
-- **Category**: Select primary and cross-list categories
-- **License**: Select appropriate arXiv license
-- **Files**: Single directory with main.tex, references.bib, figures/
-- **Size**: Total package under 10MB
-- **Metadata**: Title must match document exactly
-- **Note**: Position papers in CS may require prior peer review (October 2025 policy)
+Read the workspace brief for context. Identify:
 
-### SSRN
+- Which paper
+- Which venue (arXiv, SSRN, AIES, AI & Society)
+- Current status and any blockers
+- Venue deadline (if applicable)
 
-- **Format**: PDF (clean, formatted)
-- **Abstract**: Up to 400 words
-- **Keywords**: 3-5 from SSRN taxonomy
-- **JEL codes**: If applicable
-- **No submission fee**
+Present status to user and confirm the target.
 
-### AIES
+### 2. Version Check
 
-- **Format**: AAAI 2-column format (aaai author kit)
-- **Page limit**: 10 pages excluding references
-- **Review**: Single-blind
-- **Required sections**: Broader impact
-- **Note**: Check current year's deadlines and author kit
+Before any content changes:
 
-### AI & Society
+- [ ] Current version number matches the Version History table's latest entry
+- [ ] If this submission involves content changes, bump the version:
+  1. Copy current file to `archive/versions/{Name}-v{X.Y}.md`
+  2. Update version number and date in frontmatter
+  3. Add a row to the Version History table
+  4. Update `archive/versions/README.md`
+- [ ] License line (CC BY 4.0) present in frontmatter
 
-- **Format**: Springer LaTeX template or Word
-- **Review**: Double-blind (no author identification in body)
-- **No strict page limit**
-- **Section**: Research Article or Open Forum
+### 3. Source Quality Preflight
 
-### Other Venues
+Run these checks on the source document:
 
-For unlisted venues, the command will:
-1. Ask for venue formatting requirements
-2. Check citation density against venue norms
-3. Verify all required sections are present
-4. Package the submission
+**Content checks:**
 
-## Output
+- [ ] No TODO/TBD/placeholder markers
+- [ ] No internal file path references (docs/, workspaces/, .claude/)
+- [ ] All cross-references resolve (every "Section X" points to a real section)
+- [ ] All citations have corresponding references
+- [ ] Version number and date are current
+- [ ] Version History table present at end of document
+- [ ] Disclosure section present and accurate
+- [ ] Honest limitations section present and substantive
+- [ ] No unfalsifiable claims without citation
 
-Create a submission directory in the workspace with venue-specific files and a submission checklist.
+**Delegate to agents:**
 
-## Journal Entry
+- **cross-reference-auditor** — Citation accuracy, cross-reference integrity
+- **claims-verifier** — Verify all factual claims before archival submission
 
-Produce a GAP journal entry for any remaining issues:
+**Venue-specific checks:**
 
-```yaml
----
-type: GAP
-date: [today]
-paper: [paper name from brief]
-topic: submission preparation for $venue
-tags: [submission, $venue]
----
+- arXiv: Category fit, contribution statement clear
+- SSRN: Abstract 150-400 words, keywords selected
+- AIES: Max 10 pages (estimate), broader impact section, single-blind compliance
+- AI & Society: Double-blind compliance, no author identification in body
+
+### 4. Citation Audit
+
+Count references and compare against venue minimum:
+
+| Venue        | Minimum | Action if Below                     |
+| ------------ | ------- | ----------------------------------- |
+| arXiv        | 15      | Add foundational/competitor refs    |
+| SSRN         | 10      | Usually sufficient                  |
+| AIES         | 25      | Major related work expansion needed |
+| AI & Society | 30      | Major related work expansion needed |
+
+For each missing category, identify specific papers to add:
+
+- Foundational works in the field
+- Contemporary competitors (search arXiv recent years)
+- Governance and regulatory frameworks (if applicable)
+- Methodology (if applicable — HCI, design science, case study)
+
+### 5. Format Conversion
+
+Convert the Markdown source to the venue's required format:
+
+**arXiv**: Markdown to LaTeX (article class)
+
+- Generate `references.bib` from the References section
+- Verify all `\cite{}` keys resolve
+
+**SSRN**: Markdown to Formatted PDF
+
+- Clean formatting with proper headings, tables, references
+- Title page with abstract, keywords, JEL codes
+- Can be generated from LaTeX or directly formatted
+
+**AIES**: Markdown to LaTeX (AAAI 2-column)
+
+- Use `aaai25.sty` author kit
+- 10-page limit enforcement
+- natbib bibliography style
+
+**AI & Society**: Markdown to LaTeX (Springer)
+
+- Springer svjour3 template
+- Double-blind: remove author block from body
+
+### 6. Package and Validate
+
+Create the submission package:
+
 ```
+workspaces/<project>/05-submit/<venue>/
+  main.tex (or main.pdf for SSRN)
+  references.bib
+  figures/ (if any)
+  README-submit.md (step-by-step human instructions)
+```
+
+**Validation:**
+
+- [ ] Format compiles/renders without errors
+- [ ] All references resolve
+- [ ] Page count within venue limit (if applicable)
+- [ ] Blind review compliance (if applicable)
+- [ ] No archival-unsafe content
+- [ ] File size under venue limit
+
+### 7. Generate Submission Guide
+
+Create `README-submit.md` with venue-specific step-by-step instructions:
+
+- Account creation (if first time)
+- Exact URL to submit
+- What to upload and in what order
+- Metadata to enter (title, abstract, keywords, category)
+- License selection
+- What to expect after submission (timeline, IDs)
+
+### 8. Track Submission
+
+Update the workspace brief or tracking document with:
+
+- Submission date
+- Venue
+- Assigned ID (when available)
+- Status (submitted, under review, accepted, revision requested)
+
+## Agent Teams
+
+- **cross-reference-auditor** — Cross-reference and citation accuracy
+- **claims-verifier** — Verify all claims before archival submission
+- **literature-researcher** — Identify missing references for citation density
+- **field-expert** — Content accuracy for the research domain

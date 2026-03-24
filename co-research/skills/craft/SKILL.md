@@ -1,104 +1,169 @@
 ---
 name: craft
-description: Author writes, AI teaches and critiques - literature gap check, originality coaching, defense prep
-arguments:
-  - name: section
-    description: The section or topic the author is writing about
-    required: true
+description: "Paragraph-level co-authorship where the AI teaches and the human writes. Defense preparation, literature gap check, originality coaching."
 ---
 
-# /craft $section
+## What This Command Does (present to user)
 
-You are in author-writes mode for **$section**. The author writes their own prose. You provide:
+We go through the paper paragraph by paragraph. For each paragraph, I teach you the literature, prepare you for oral defense, check for recent publications that could challenge us, and give you enough context to write it in your own words. You write. I critique. We iterate until the paragraph is yours, defensible, and undetectable by originality tools.
 
-1. **Literature gap check**: What sources should the author engage with in this section?
-2. **Originality coaching**: What makes the author's argument different from existing work?
-3. **Defense preparation**: What would a hostile reviewer ask about this section?
-4. **Critical feedback**: After the author writes, provide specific, constructive critique
+This is the opposite of `/co-research:write-para` (where I draft and you approve). Here, you are the craftsman. I am the coach.
 
-This mode is preferred for doctoral work, papers where the author's voice is central, and defense preparation.
+## Your Role (communicate to user)
 
-## Protocol
+You write every paragraph. I cannot write it for you because: (1) the paper must survive originality detection, (2) you must be able to defend every sentence in an oral examination, (3) your voice is the paper's voice. My job is to make sure you know enough to write it well.
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load context**: Read the paper brief, existing literature assessments, decision records, and any prior drafts of this section
-3. **Prepare the teaching context**: Before the author writes, provide the background they need
+## Workspace Resolution
 
-## Phase 1: Pre-Writing Briefing
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store coaching notes in `workspaces/<project>/03-drafts/craft-notes/`
+4. Store the author's drafts in `workspaces/<project>/03-drafts/versions/`
 
-Before the author writes, provide:
+## Workflow
 
-### Literature Context
-- What key papers should be engaged with in this section?
-- What are the common positions the author should be aware of?
-- What gaps exist that the author's argument fills?
+### Phase 1: TEACH (AI leads)
 
-### Originality Check
-- What makes the author's argument different from [specific similar works]?
-- What is the author contributing that is genuinely new?
-- Where is the author most vulnerable to "this has been said before"?
+For the target paragraph, present:
 
-### Defense Preview
-- What would Reviewer 2 ask about this section?
-- What are the weakest points that need preemptive strengthening?
+**1a. Motivation and Central Idea**
 
-## Phase 2: Author Writes
+- What is this paragraph's job in the argument?
+- What must the reader take away?
+- What are the 2-3 things the author MUST emphasize?
+- How does it connect to the paragraph before and after?
 
-The author writes their own prose. Wait for them to share it.
+**1b. Literature and Defense Preparation**
 
-## Phase 3: Critique
+- Background literature: who said what, when, and why it matters
+- Surrounding literature: what a reviewer or examiner would expect you to know
+- Common miscitations: how these papers are frequently misunderstood
+- Defense questions: "If an examiner asks X, your answer is Y because Z"
+- Gap alerts: "If you cite A, expect the examiner to ask about B"
 
-When the author shares their draft, provide:
+**1c. Literature Gap Check**
 
-### Argument Strength
-- Does the logic hold? Any gaps or unsupported leaps?
-- Is the evidence proportional to the claims?
+- Delegate to **literature-researcher** to search for post-2020 publications that:
+  - Address the same question as this paragraph
+  - Could replace or challenge a claim in this paragraph
+  - Are standard references that reviewers would expect
+- For each finding: what it says, what it does NOT say, whether we MUST cite it
 
-### Voice and Style
-- Does it match the rest of the paper?
-- Any AI-signature patterns that crept in? (Check against `rules/academic-writing-style.md`)
+**1d. Author Briefing**
 
-### Missing Engagement
-- Any sources the author should cite here but did not?
-- Any counterarguments that should be addressed?
+- Give enough detail for the author to write the paragraph in their own words
+- List the elements the paragraph needs (in order)
+- Suggest the register (formal, semi-formal, plain-spoken) appropriate for this position in the paper
+- Note any specific phrasings that are yours (anchor terms) vs. generic
 
-### Defense Readiness
-- Can the author defend every sentence in this section?
-- What follow-up questions would an examiner ask?
+### Phase 2: WRITE (Author leads)
 
-## Delegation
+Wait for the author to write their version. Do NOT draft for them.
 
-Spawn **field-expert** for literature context and **argument-critic** for critique.
+If the author asks for help starting, offer:
 
-## Output
+- The first sentence as a prompt (just the opening, not the paragraph)
+- A structural skeleton: "Sentence 1 does X. Sentence 2 does Y. Sentence 3 does Z."
+- An analogy or example that might trigger their thinking
 
-Store craft notes in the workspace's `craft-notes/` directory:
+### Phase 3: CRITIQUE (AI leads)
 
-```markdown
-# Craft Notes: $section
-Date: [today]
+When the author submits their draft, evaluate on five dimensions:
 
-## Pre-Writing Briefing
-[Literature context, originality check, defense preview]
+**3a. Substance**
 
-## Author's Draft
-[Reference to the draft file/version]
+- Does the paragraph accomplish its job in the argument?
+- Are all claims substantiated or flagged?
+- Is anything missing that the briefing identified as essential?
+- Is anything present that weakens the argument?
 
-## Critique
-[Argument strength, voice, missing engagement, defense readiness]
-```
+**3b. Style (per rules/academic-writing-style.md)**
 
-## Journal Entry
+- No em dashes
+- No AI-signature words
+- No mechanical transitions
+- Varied sentence length (burstiness)
+- Active voice for author claims
+- Domain-specific vocabulary
+- No parallel lists as rhetorical device
+- No trailing significance claims
 
-Produce a DEFENSE journal entry in the workspace's `journal/` directory:
+**3c. Originality**
 
-```yaml
----
-type: DEFENSE
-date: [today]
-paper: [paper name from brief]
-section: $section
-topic: craft session
-tags: [relevant tags]
----
-```
+- Does this read like the author wrote it, or like AI wrote it?
+- Flag any sentences that sound AI-generated (uniform register, predictable word choices, low perplexity)
+- Suggest where the author's natural voice could be stronger
+- Check for the specific patterns that Originality.ai, GPTZero, and Turnitin flag (see rules/academic-writing-style.md)
+
+**3d. Flow**
+
+- Does it connect to the previous paragraph?
+- Does it set up the next paragraph?
+- Is the transition natural or mechanical?
+
+**3e. Defense Readiness**
+
+- Could the author defend every sentence in this paragraph to a hostile examiner?
+- Are there sentences the author might not fully understand?
+- Flag any "borrowed authority" (citing a paper the author hasn't read)
+
+### Phase 4: ITERATE
+
+Present the critique. The author revises. Repeat Phase 3 until:
+
+- All five dimensions pass
+- The author is confident they can defend every sentence
+- The paragraph sounds like the author, not like AI
+
+### Phase 5: RECORD
+
+**5a. Store craft notes**
+Save to `workspaces/<project>/03-drafts/craft-notes/<part>-<para-num>.md`:
+
+- The teaching provided (Phase 1)
+- Literature identified
+- Defense questions and answers
+- Critique history (what changed and why)
+- Final approved version
+
+**5b. Journal all insights**
+Create journal entries for:
+
+- **TEACH**: Any concept explained during coaching
+- **LITERATURE**: Any paper discovered during gap check
+- **MARGIN**: Any writing decision with rationale
+- **DEFENSE**: Any defense question identified
+- **CONNECTION**: Any cross-paragraph or cross-paper link discovered
+
+**5c. Update the draft**
+Replace the corresponding paragraph in the draft version file with the author's approved text.
+
+## Parallel Operations
+
+While working with the author on one paragraph, background agents can:
+
+- Run the literature gap check for the NEXT paragraph (read-ahead)
+- Verify citations mentioned in the current paragraph
+- Check if recent publications affect upcoming paragraphs
+
+## Agent Team
+
+- **field-expert** -- Primary for Phase 1: teaches background literature and defense preparation
+- **literature-researcher** -- Primary for Phase 1c: searches for recent and missing literature
+- **writing-partner** -- Primary for Phase 3: critiques the author's draft (substance, style, flow)
+- **argument-critic** -- Support for Phase 3e: identifies defense vulnerabilities
+- **claims-verifier** -- Support: verifies specific claims in the author's draft
+
+## Rules That Apply
+
+- `rules/academic-writing-style.md` -- All originality and style requirements
+- `rules/research-integrity.md` -- No attribution without verification
+- `rules/deliberation-records.md` -- Every decision recorded
+
+## Approval Gate
+
+FULL verification. Every paragraph requires explicit author approval. The author's text is the only text that goes into the paper.
+
+## The Principle
+
+The paper must be genuinely co-authored. The human makes every structural decision, understands every argument, and writes every sentence. The AI researches, teaches, and critiques. The output reflects the human's voice because the human wrote it. This is not a workaround for AI detection; it is the correct model of co-authorship.

@@ -1,67 +1,23 @@
 ---
 name: ws
-description: Show workspace status dashboard
-arguments: []
+description: "Show workspace status dashboard. Read-only."
 ---
 
-# /ws
+Display the current workspace status in plain language. Do not modify any files.
 
-Show the current workspace status dashboard. This provides a quick overview of where things stand.
+1. List all directories under `workspaces/` (excluding `instructions/`).
 
-## Protocol
+2. For the most recently modified workspace (or `$ARGUMENTS` if specified):
+   - Show workspace name and path
+   - Derive current phase and present using plain-language descriptions:
+     - Has `01-analysis/` files → "Research and planning completed"
+     - Has `todos/active/` files → "Project roadmap created — ready for your review"
+     - Has `todos/completed/` files → "Building in progress" + progress summary
+     - Has `04-validate/` files → "Testing completed — results ready for your review"
+     - Agents/skills were updated in phase 05 → "Knowledge captured — the AI remembers this project"
+   - Show progress: "X of Y tasks completed" (count files in `todos/active/` vs `todos/completed/`)
+   - List the 5 most recently modified files in the workspace
+   - If `.session-notes` exists, show its contents and age
+   - Suggest the next action: "Next step: run `/co-research:implement` to continue building" or similar
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **If no workspace found**, list available workspaces (excluding `_template`) and suggest creating one
-
-## Dashboard Contents
-
-### Paper Overview
-- Read the paper brief from `briefs/`
-- Display: paper title, target venue, current phase
-
-### Literature Status
-- Count files in `01-analysis/literature/`
-- List recent literature assessments
-
-### Decisions Made
-- Count files in `03-drafts/deliberation/decisions/`
-- List the most recent 5 decisions
-
-### Draft Status
-- Check `03-drafts/versions/` for draft snapshots
-- Report current draft version and date
-
-### Validation Status
-- Check `04-validate/reviews/` for verification reports, challenge results, preflight reports
-- Summarize: what has been validated, what has not
-
-### Journal Activity
-- Count journal entries by type
-- Show the most recent 5 entries
-
-### Active Todos
-- List items in `todos/active/`
-- Highlight high-priority items
-
-### Session Notes
-- Check for `.session-notes` file
-- If present, show last session summary
-
-## Output Format
-
-```
-=== COR Workspace: [name] ===
-Paper: [title]
-Venue: [target]
-Phase: [current phase]
-
-Literature:  [N] assessments
-Decisions:   [N] recorded
-Drafts:      [current version or "no drafts yet"]
-Validation:  [summary]
-Journal:     [N] entries ([breakdown by type])
-Todos:       [N] active ([N] high priority)
-
-Recent activity:
-  [Last 3 journal entries or actions]
-```
+3. Present as a compact, friendly summary. Use plain language throughout.

@@ -1,83 +1,46 @@
 ---
 name: check-refs
-description: Cross-reference and citation audit for a paper
-arguments:
-  - name: paper
-    description: The paper file or directory to audit
-    required: true
+description: "Audit all cross-references and citations in a paper or across papers."
 ---
 
-# /check-refs $paper
+## What This Command Does (present to user)
 
-You are conducting a cross-reference audit of **$paper**. Every citation must resolve, every reference must be cited, and all formatting must be consistent.
+Checks every citation in your paper for integrity: does every in-text citation have a reference entry? Is every reference entry actually cited? Are cross-paper citation suffixes consistent? Are scope boundaries respected?
 
-## Protocol
+## Your Role (communicate to user)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load the paper**: Read the target file(s)
-3. **Run the audit**: Check all citations and references
+Review the report. Orphan citations need reference entries. Phantom references should be cited or removed. Scope violations need content moved to the right paper.
 
-## Delegation
+## Workspace Resolution
 
-Spawn the **cross-reference-auditor** agent for the audit.
+1. Parse `$ARGUMENTS` for target paper or workspace
+2. If no argument, use the most recently modified workspace under `workspaces/`
+3. Store results in `workspaces/<project>/04-validate/reviews/`
 
-## Audit Phases
+## Workflow
 
-### Phase 1: Citation Extraction
-- Extract every in-text citation with author, year, suffix, page number, and location
-- Build a complete citation inventory
+### 1. Parse target
 
-### Phase 2: Reference List Extraction
-- Parse the reference section
-- Build a complete reference inventory
+Determine which paper(s) to audit.
 
-### Phase 3: Cross-Match
-- Orphan citations (cited in text, not in references)
-- Uncited references (in references, not cited in text)
-- Suffix inconsistencies
-- Year mismatches
-- Author name spelling inconsistencies
+### 2. Run audits
 
-### Phase 4: Format Check
-- Citation format consistency (Author, Year) vs (Author Year) vs numbered
-- Reference format consistency (matching target venue style)
-- Alphabetical ordering of reference list
+Delegate to **cross-reference-auditor**:
 
-### Phase 5: Scope Check (if multiple papers)
-- Verify each paper stays within its declared scope
-- Check companion paper cross-references are accurate
+1. **Orphan citations** — `(Author, Year)` without reference entry
+2. **Phantom references** — Reference entry never cited in text
+3. **Suffix consistency** — Multi-paper citation suffixes (a, b, c) consistent across documents
+4. **Shared fact consistency** — License terms, version numbers, key claims consistent across papers
+5. **Scope violations** — Content that belongs in a different paper or section
 
-## Output
+### 3. Store results
 
-### Audit Report
+Save in `workspaces/<project>/04-validate/reviews/refs-<date>.md`.
 
-Store in `04-validate/reviews/` named `ref-audit-[paper-slug].md`:
+### 4. Present to user
 
-```markdown
-# Cross-Reference Audit: $paper
-Date: [today]
+Structured report with PASS/FAIL per item. Highlight items needing attention.
 
-## Summary
-- In-text citations: [N]
-- Reference entries: [N]
-- Orphan citations: [N]
-- Uncited references: [N]
-- Inconsistencies: [N]
+## Agent Team
 
-## Issues Found
-[Detailed list of each issue with location and suggested fix]
-```
-
-## Journal Entry
-
-Produce a CONNECTION journal entry:
-
-```yaml
----
-type: CONNECTION
-date: [today]
-paper: [paper name from brief]
-topic: cross-reference audit
-tags: [relevant tags]
----
-```
+- **cross-reference-auditor** — Primary: runs all checks

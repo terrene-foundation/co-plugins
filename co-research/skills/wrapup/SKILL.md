@@ -1,51 +1,21 @@
 ---
 name: wrapup
-description: Save session notes for continuity before ending a session
-arguments: []
+description: "Write session notes before ending. Captures context for next session."
 ---
 
-# /wrapup
+Write session notes to preserve context for the next session.
 
-Save session progress so the next session can pick up where you left off. This writes a `.session-notes` file that is automatically loaded at session start.
+1. Determine the active workspace:
+   - If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
+   - Otherwise, use the most recently modified directory under `workspaces/` (excluding `instructions/`)
 
-## Protocol
+2. Write a `.session-notes` file in the workspace root using plain language a non-technical user can understand:
+   - **Accomplished**: Describe in terms of what users can now do or what's been decided, not technical tasks ("Users can now sign up and log in" not "Implemented auth endpoints")
+   - **In progress**: Describe what's being worked on in terms of user-visible features
+   - **Blockers**: Describe any decisions needed from the user in clear, specific terms with the implications of each option
+   - **Next steps**: Describe what will happen next session in terms of outcomes
+   - **Active todo**: Which todo was being worked on (for the AI's context restoration)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Review the session's work**: Check git log, recent file changes, journal entries created this session
-3. **Write session notes**
+3. Keep it concise (under 30 lines). This file is read by the next session's startup to restore context.
 
-## Session Notes Content
-
-Write `.session-notes` in the repository root with:
-
-```markdown
-# Session Notes
-Date: [today]
-Workspace: [active workspace name]
-
-## What Was Accomplished
-[Bullet list of what was done this session]
-
-## Current State
-[Where the paper/research stands right now]
-
-## Decisions Made
-[Any structural decisions recorded this session]
-
-## Open Questions
-[Questions that need to be answered next session]
-
-## Next Steps
-[What should be done in the next session, in priority order]
-
-## Active Concerns
-[Any issues, risks, or concerns to carry forward]
-```
-
-## Rules
-
-- Be specific about what was accomplished and what remains
-- Reference file paths for any artifacts created
-- Note any claims that still need verification
-- Note any decisions that need author follow-up
-- The next session's AI will read these notes; write for that audience
+4. Overwrite any existing `.session-notes` — only the latest matters.

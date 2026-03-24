@@ -1,73 +1,63 @@
 ---
 name: validate-claim
-description: Verify claims against cited sources with structured verification reports
-arguments:
-  - name: target
-    description: The section, paragraph, or specific claim to verify
-    required: true
+description: "Verify a specific claim or section against cited sources. Is this what the paper actually says?"
 ---
 
-# /validate-claim $target
+## What This Command Does (present to user)
 
-You are verifying the claims in **$target** against their cited sources. Every factual and attributive claim must be checked.
+Checks whether the claims in your paper are actually supported by the sources you cite. Every attribution gets verified — we check if the cited paper really says what you say it says.
 
-## Protocol
+## Your Role (communicate to user)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load the target content**: Read the section, paragraph, or specific claim to be verified
-3. **Extract all claims**: Identify every claim that cites a source or states a verifiable fact
+Review the verification report. For any claim marked OVERCLAIMED or worse, decide whether to fix the attribution, soften the claim, or find a better source.
 
-## Delegation
+## Workspace Resolution
 
-Spawn the **claims-verifier** agent to conduct the verification. The agent produces structured reports with VERIFIED / OVERCLAIMED / FABRICATED verdicts for each claim.
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store results in `workspaces/<project>/04-validate/reviews/`
 
-## Verification Scope
+## Workflow
 
-For each claim identified:
+### 1. Parse target
 
-1. **Attributive claims**: "Author (Year) argued X" -- does the author actually argue X?
-2. **Factual claims**: "X is the case (Author, Year)" -- does the source support this?
-3. **Numerical claims**: "84 guidelines were surveyed" -- does the source contain this number?
-4. **Scope claims**: "No prior work addresses X" -- is this actually true?
+If `$ARGUMENTS` is a quoted claim — verify that specific claim.
+If `$ARGUMENTS` is a section reference (e.g., "Part III") — verify all claims in that section.
+If `$ARGUMENTS` is "full-paper" — verify every claim.
 
-## Output
+### 2. Extract claims
 
-### Verification Report
+Read the target text and extract every factual or attributive claim:
 
-Store the report in `04-validate/reviews/` named `claim-verification-[target-slug].md`:
+- "Author (Year) argued/showed/demonstrated X"
+- "Research shows that X"
+- Quantitative claims (counts, percentages, dates)
+- Self-citations referencing companion papers
 
-```markdown
-# Claim Verification: $target
-Date: [today]
-Verifier: claims-verifier agent
+### 3. Verify each claim
 
-## Summary
-- Claims checked: [N]
-- VERIFIED: [N]
-- OVERCLAIMED: [N]
-- FABRICATED: [N]
-- Unable to verify: [N]
+Delegate to **claims-verifier** for each claim. Produce a verdict:
 
-## Detailed Results
+- **VERIFIED** — Source confirms the claim
+- **PARTIALLY_CORRECT** — Similar but oversimplified
+- **OVERCLAIMED** — Source is more nuanced
+- **MISATTRIBUTED** — Source doesn't make this claim
+- **UNVERIFIABLE** — Can't access source
+- **FABRICATED** — No evidence paper exists (FATAL)
 
-### Claim 1: "[Quoted claim]"
-- Source: [Full citation]
-- Verdict: VERIFIED / OVERCLAIMED / FABRICATED
-- Evidence: [Quote from source or explanation]
-- Action: [None / Revise to: "..." / Remove and replace]
-```
+### 4. Store results
 
-## Journal Entry
+Save verification report in `workspaces/<project>/04-validate/reviews/claims-<date>.md`.
 
-Produce a CLAIM journal entry for any significant finding:
+### 5. Present to user
 
-```yaml
----
-type: CLAIM
-date: [today]
-paper: [paper name from brief]
-section: [section name]
-topic: claim verification
-tags: [relevant tags]
----
-```
+Show each claim with its verdict. For non-VERIFIED claims, explain what the source actually says and suggest a correction.
+
+## Approval Gate
+
+FABRICATED claims are FATAL — block all further writing on that section until resolved. OVERCLAIMED and MISATTRIBUTED claims should be addressed before submission.
+
+## Agent Team
+
+- **claims-verifier** — Primary: verifies each claim against sources
+- **cross-reference-auditor** — Support: checks citation format and reference list

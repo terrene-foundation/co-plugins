@@ -1,67 +1,67 @@
 ---
 name: teach
-description: Research tutor mode - explains concepts with historical context, debates, and connections to your paper
-arguments:
-  - name: concept
-    description: The concept, paper, or topic to learn about
-    required: true
+description: "Explain a concept, paper, or field area in depth. Research tutor mode."
 ---
 
-# /teach $concept
+## What This Command Does (present to user)
 
-You are entering research tutor mode. Your goal is to explain **$concept** in depth, building the researcher's understanding so they can engage with the literature confidently and write about it with authority.
+Deep-dive into an academic concept, paper, or field area. You'll get the full context: what it means, who disagrees, how it connects to your argument, and what reviewers would expect you to know.
 
-## Protocol
+## Your Role (communicate to user)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load context**: Read the paper brief from `briefs/` and any existing journal entries related to this topic
-3. **Check for prior teaching**: Search the journal for existing TEACH entries on this topic to avoid repetition
+Listen, ask questions, push back. This is a teaching conversation — if something doesn't make sense, say so. By the end, you should be able to explain this concept to a reviewer.
 
-## Teaching Requirements
+## Workspace Resolution
 
-Every explanation MUST include:
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store teaching notes in `workspaces/<project>/01-analysis/literature/`
 
-### Historical Context
-When and why did this concept emerge? What problem was it solving? Who were the key figures?
+## Workflow
 
-### The Debates
-Who disagrees? What are the competing schools of thought? What are the stakes?
+### 1. Parse the topic
 
-### Current Status
-Is this settled, contested, or actively evolving? What is the most recent significant contribution?
+Extract the concept, paper, or field area from `$ARGUMENTS`.
 
-### Connection to the Paper
-End with: "For your paper, this means..." connecting the concept to the researcher's specific argument and contribution.
+### 2. Teach with depth
 
-### Reviewer Expectations
-"If you cite X in your paper, a reviewer will expect you to also engage with Y and Z."
+Delegate to **field-expert** agent. The teaching must include:
 
-### Common Miscitations
-If this concept is frequently misused in the literature, warn about it.
+- **Historical context** — When and why this work emerged
+- **Core argument** — What it actually says (not what people think)
+- **Key debates** — Who disagrees and why
+- **Common miscitations** — How this is frequently misused
+- **Connection to your paper** — How this relates to the user's research
+- **Gap alert** — "If you cite X, expect reviewers to also want Y"
 
-## Confidence Levels
+### 3. Find canonical citations
 
-Be explicit about your certainty:
-- "This is well-established in the field" (high confidence)
-- "This is my reading of the paper, but verify against the source" (medium confidence)
-- "I recall something like this but cannot verify the details" (low confidence)
+Delegate to **literature-researcher** to find the primary source and key secondary sources. Verify citations exist.
 
-## Delegation
+### 4. Store teaching notes
 
-Spawn the **field-expert** agent for deep domain knowledge. If literature search is needed, also spawn **literature-researcher**.
+Save a structured note in `workspaces/<project>/01-analysis/literature/<topic-slug>.md` containing:
 
-## Journal Entry
+- The concept explained
+- Key citations with verification status
+- Connection to the paper
+- Debates and limitations
 
-Produce a TEACH journal entry in the workspace's `journal/` directory:
+### 5. Journal the teaching
 
-```yaml
----
-type: TEACH
-date: [today]
-paper: [paper name from brief]
-topic: $concept
-tags: [relevant tags]
----
-```
+Create a TEACH journal entry in `workspaces/<project>/journal/NNNN-TEACH-<topic>.md` with frontmatter (type, date, paper, section, topic, tags). Include:
 
-Include: what was taught, key sources referenced, connection to the paper, and any gaps identified for follow-up.
+- The concept taught
+- Key debates identified
+- Connection to the paper
+- Gap alerts (what reviewers would expect)
+- Any CONNECTION entries for cross-concept links discovered
+
+### 6. Present to user
+
+Explain in accessible language. Ask: "Does this make sense? Any questions before we move on?"
+
+## Agent Team
+
+- **field-expert** — Primary: teaches the concept
+- **literature-researcher** — Support: finds and verifies sources

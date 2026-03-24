@@ -1,81 +1,71 @@
 ---
 name: deliberate
-description: Record a structural decision about the paper with alternatives and rationale
-arguments:
-  - name: topic
-    description: The decision topic or question to resolve
-    required: true
+description: "Record a structural decision about the paper. What was decided, why, what was rejected."
 ---
 
-# /deliberate $topic
+## What This Command Does (present to user)
 
-You are recording a structural decision about **$topic**. Every significant decision about the paper's argument, structure, scope, or framing must be documented with alternatives considered and rationale for the choice.
+Records a structural decision about the paper — subtitle choice, section ordering, scope boundary, what to include or exclude. The decision and its rationale are documented for the audit trail.
 
-## Protocol
+## Your Role (communicate to user)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load context**: Read the paper brief, existing decisions in `03-drafts/deliberation/decisions/`, and relevant journal entries
-3. **Check for prior decisions**: Has this topic been decided before? If so, surface the prior decision and ask if it should be revisited
+This is your decision. I present the options, explain the trade-offs, and suggest a recommendation. But you decide. The record captures your reasoning, not mine.
 
-## Deliberation Process
+## Workspace Resolution
 
-### Step 1: Frame the Decision
-State clearly what needs to be decided and why it matters for the paper.
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store decisions in `workspaces/<project>/03-drafts/deliberation/decisions/`
 
-### Step 2: Present Alternatives
-Present at least 2 genuinely viable alternatives (not strawmen). For each:
-- What the option is
-- How it affects the paper's argument
-- How it affects reviewer reception at the target venue
-- Trade-offs
+## Workflow
 
-### Step 3: Recommend
-State your recommendation with reasoning. Be explicit about confidence level.
+### 1. Parse the topic
 
-### Step 4: Wait for Author Decision
-Do NOT proceed without the author's explicit choice.
+Extract the decision topic from `$ARGUMENTS`.
 
-### Step 5: Record the Decision
+### 2. Frame the decision
 
-Create a decision record in `03-drafts/deliberation/decisions/` named `NNNN-[topic-slug].md`:
+Present clearly:
+
+- What is being decided
+- What options exist (at least 2 genuinely viable alternatives)
+- Trade-offs for each option
+- Reviewer impact: how would each choice affect reception at the target venue?
+- Recommendation with reasoning
+
+### 3. Wait for the author's decision
+
+This is a FULL verification gate. The author must explicitly state their choice. Do not proceed without it.
+
+### 4. Record the decision
+
+Store a structured decision record:
 
 ```markdown
----
-id: NNNN
-topic: $topic
-date: [today]
-decision: [what was decided]
-confidence: high | medium | low
----
+# Decision: [Topic]
 
-## Question
-[What needed to be decided]
+**Date**: [Date]
+**Decided**: [What was decided]
+**Rationale**: [Why — in the author's words if possible]
+**Alternatives considered**:
 
-## Alternatives Considered
-
-### Option A: [Name]
-[Description, argument impact, reviewer impact, trade-offs]
-
-### Option B: [Name]
-[Description, argument impact, reviewer impact, trade-offs]
-
-## Decision
-[What was chosen and why]
-
-## Reviewer Impact
-[How this choice affects reception at the target venue]
+- [Option A] — rejected because [reason]
+- [Option B] — rejected because [reason]
+  **Reviewer impact**: [How this affects reception]
+  **Confidence**: [Author's confidence level]
 ```
 
-## Journal Entry
+Save in `workspaces/<project>/03-drafts/deliberation/decisions/<topic-slug>.md`.
 
-Produce a DELIBERATION journal entry in the workspace's `journal/` directory:
+### 5. Confirm
 
-```yaml
----
-type: DELIBERATION
-date: [today]
-paper: [paper name from brief]
-topic: $topic
-tags: [relevant tags]
----
-```
+Show the recorded decision to the author. Ask: "Does this accurately capture your reasoning?"
+
+## Approval Gate
+
+FULL verification — the author must explicitly make the decision and confirm the record captures it accurately.
+
+## Agent Team
+
+- No specific agent delegation — this is a direct interaction between the AI and the author
+- **field-expert** may be consulted if the decision involves domain knowledge

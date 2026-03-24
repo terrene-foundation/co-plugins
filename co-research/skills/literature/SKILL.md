@@ -1,86 +1,78 @@
 ---
 name: literature
-description: Systematic literature search and structured assessment
-arguments:
-  - name: topic
-    description: The topic or research question to survey
-    required: true
+description: "Systematic literature search on a topic. Find, assess, and organize relevant papers."
 ---
 
-# /literature $topic
+## What This Command Does (present to user)
 
-You are conducting a systematic literature search on **$topic**. The goal is to find, assess, and synthesize the relevant scholarly literature, identifying what exists, what is missing, and how it connects to the researcher's argument.
+Systematic search for academic papers on a topic. You'll get an organized list of relevant papers, grouped by approach, with quality assessment and gap identification.
 
-## Protocol
+## Your Role (communicate to user)
 
-1. **Find the active workspace** by checking `workspaces/` for the most recently modified project directory
-2. **Load context**: Read the paper brief and existing literature notes in `01-analysis/literature/`
-3. **Check for existing coverage**: Search for prior LITERATURE journal entries on this topic
+Review the papers found and decide which ones to include in your working bibliography. You know your argument better than anyone — you decide what's relevant.
 
-## Search Strategy
+## Workspace Resolution
 
-### Phase 1: Broad Discovery
-- Search for the topic across academic databases, arXiv, Google Scholar, SSRN
-- Identify seminal works, recent surveys, and meta-analyses
-- Note the key authors and research groups working on this topic
+1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/`
+3. Store results in `workspaces/<project>/01-analysis/literature/`
 
-### Phase 2: Citation Chain Following
-- Follow backward citations (what do key papers cite?)
-- Follow forward citations (what cites key papers?)
-- Identify the intellectual lineage of the main arguments
+## Workflow
 
-### Phase 3: Gap Identification
-- What questions remain open in the literature?
-- Where does the researcher's work make a novel contribution?
-- What would a reviewer expect to see cited that is currently missing?
+### 1. Parse search terms
 
-## Delegation
+Extract search terms from `$ARGUMENTS`.
 
-Spawn the **literature-researcher** agent to conduct the search. The agent will produce structured paper assessments.
+### 2. Systematic search
 
-## Output
+Delegate to **literature-researcher**:
 
-### Literature Assessment File
+- Search across arXiv, Google Scholar, Semantic Scholar, DBLP
+- Use specific queries, not broad terms
+- Find 10-20 papers per search, prioritizing:
+  - Foundational works (high citation count)
+  - Recent high-impact papers (last 3 years)
+  - Direct competitors or alternative approaches
+  - Papers reviewers at target venue would expect
 
-Create a structured assessment in `01-analysis/literature/` named `[topic-slug].md`:
+### 3. Assess and organize
 
-```markdown
-# Literature Assessment: $topic
+For each paper found:
 
-## Search Strategy
-[What was searched and how]
+- Title, authors, year, venue
+- Relevance score (HIGH/MEDIUM/LOW)
+- One-sentence summary
+- Verification status (VERIFIED/UNVERIFIED)
 
-## Key Papers
+Group by approach:
 
-### [Author (Year)] - [Title]
-- **Says**: [Key argument]
-- **Does NOT say**: [Common misinterpretation]
-- **Method**: [Research approach]
-- **Relevance**: [Connection to our paper]
-- **Confidence**: [High/Medium/Low]
+- Foundational / Canonical
+- Contemporary / Recent
+- Competing / Alternative
+- Governance / Policy
+- Methodology / Design Science
 
-## Themes
-[Thematic synthesis across papers]
+### 4. Identify gaps
 
-## Gaps
-[What the literature does not address that our paper can]
+Flag topics where no papers were found but reviewers would expect coverage. "You have nothing on X — a reviewer will notice."
 
-## Reviewer Expectations
-[Papers a reviewer would expect to see cited]
-```
+### 5. Store results
 
-### Journal Entry
+Save in `workspaces/<project>/01-analysis/literature/<search-slug>.md`.
 
-Produce a LITERATURE journal entry in the workspace's `journal/` directory:
+### 6. Journal findings
 
-```yaml
----
-type: LITERATURE
-date: [today]
-paper: [paper name from brief]
-topic: $topic
-tags: [relevant tags]
----
-```
+For each paper assessed, create a LITERATURE journal entry in `workspaces/<project>/journal/NNNN-LITERATURE-<author-topic>.md`. For each gap identified, create a GAP entry. Include frontmatter with tags for sub-field, relevance, and concepts connected.
 
-Include: papers found, key themes, gaps identified, and implications for the paper.
+### 7. Present to user
+
+Show the organized list with recommendations. Ask: "Which of these should we include in the working bibliography? Any areas you want me to search deeper?"
+
+## Approval Gate
+
+User confirms which papers to include. Literature selection is a STANDARD verification decision — the user evaluates, but the AI presents options.
+
+## Agent Team
+
+- **literature-researcher** — Primary: searches and assesses
+- **field-expert** — Support: provides context for papers found
