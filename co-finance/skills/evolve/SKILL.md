@@ -1,3 +1,8 @@
+---
+name: evolve
+description: "Evolve learned instincts into skills, commands, or agents."
+---
+
 # /evolve - Instinct Evolution Command
 
 ## Purpose

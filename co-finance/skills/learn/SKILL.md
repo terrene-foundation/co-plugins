@@ -1,3 +1,8 @@
+---
+name: learn
+description: "View learning status, analyze patterns, and generate instincts."
+---
+
 # /learn - Continuous Learning Command
 
 ## Purpose
