@@ -1,3 +1,8 @@
+---
+name: checkpoint
+description: "Save and restore learning state checkpoints."
+---
+
 # /co-research:checkpoint - Learning Checkpoint Command
 
 ## Purpose
