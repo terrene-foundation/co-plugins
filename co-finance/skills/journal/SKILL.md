@@ -41,6 +41,9 @@ Parse `$ARGUMENTS`:
 ---
 type: [TYPE]
 date: [today's date, YYYY-MM-DD]
+created_at: [ISO-8601 timestamp, e.g. 2026-03-27T14:23:17Z]
+author: [human | agent | co-authored — based on who drove the insight]
+session_id: [current session ID if available, otherwise omit]
 project: [workspace name]
 topic: [topic description]
 phase: [current COF phase: analyze | todos | assignment | review | wrapup]
@@ -50,6 +53,10 @@ tags: []
 ## [Section heading appropriate to type]
 
 [Content — prompt the student for details if not provided]
+
+## For Discussion
+
+[Generate 2-3 questions an assessor or collaborator might ask about this entry, based on the actual content and decision context. These should probe the reasoning, not just restate facts.]
 ```
 
 4. Type-specific structure:
@@ -67,7 +74,14 @@ tags: []
    - **GAP**: Sections for What Is Missing, Why It Matters, How to Resolve
      - Example: "GAP: missing-10yr-yield-data" — data you still need to find for your analysis
 
-5. After creating, confirm with the entry number and path.
+5. The `author` field reflects who drove the insight:
+   - `human` — the user identified this insight, the AI recorded it
+   - `agent` — the AI surfaced this insight during analysis
+   - `co-authored` — emerged through dialogue; neither party alone would have reached it
+
+6. The `## For Discussion` section scaffolds metacognition and prepares for oral follow-up. Generate questions specific to the entry content — not generic templates.
+
+7. After creating, confirm with the entry number and path.
 
 ---
 
