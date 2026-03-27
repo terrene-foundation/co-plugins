@@ -9,6 +9,15 @@ Write session notes to preserve context for the next session.
    - If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
    - Otherwise, use the most recently modified directory under `workspaces/` (excluding `instructions/`)
 
+### Journal Check
+
+Before writing session notes, review the session's work and create journal entries for any un-journaled decisions, discoveries, or risks:
+- Were any analytical decisions made without DECISION entries? (e.g., choosing a valuation method, selecting a data source, picking a theoretical framework)
+- Were any research findings discovered without DISCOVERY entries? (e.g., correlations in data, key insights from literature, surprising results)
+- Were any risks identified without RISK entries? (e.g., data quality issues, survivorship bias, missing variables)
+
+Create entries for anything missing, then proceed to write session notes.
+
 2. Write a `.session-notes` file in the workspace root using plain language a student can understand:
    - **Accomplished**: Describe in terms of what academic progress was made ("Completed literature review section with 12 sources" not "Modified 8 files"; "Finished data analysis for Table 3 showing GDP correlation" not "Updated pandas dataframe pipeline")
    - **In progress**: Describe what section or task is being worked on ("Working on methodology section — explaining the regression approach" not "Refactoring the analysis module")

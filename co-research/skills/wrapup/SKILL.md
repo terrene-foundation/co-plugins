@@ -9,6 +9,17 @@ Write session notes to preserve context for the next session.
    - If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
    - Otherwise, use the most recently modified directory under `workspaces/` (excluding `instructions/`)
 
+### Journal Check
+
+Before writing session notes, review the session's work and create journal entries for any un-journaled decisions, discoveries, or risks:
+- Were any research decisions made without DECISION entries? (methodology choices, scope changes, analytical framing)
+- Were any literature findings or insights discovered without DISCOVERY entries?
+- Were any integrity risks or methodological concerns identified without RISK entries?
+- Were any cross-paper connections noted without CONNECTION entries?
+- Were any research gaps flagged without GAP entries?
+
+Create entries for anything missing, then proceed to write session notes.
+
 2. Write a `.session-notes` file in the workspace root using plain language a non-technical user can understand:
    - **Accomplished**: Describe in terms of what users can now do or what's been decided, not technical tasks ("Users can now sign up and log in" not "Implemented auth endpoints")
    - **In progress**: Describe what's being worked on in terms of user-visible features
