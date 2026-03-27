@@ -4,12 +4,23 @@
 
 Save and restore learning state checkpoints for the continuous learning system.
 
+## Arguments
+
+`$ARGUMENTS` is parsed as the subcommand and options:
+- No arguments → show current checkpoint status
+- `save` → create new checkpoint
+- `save --name <name>` → create named checkpoint
+- `list` → list all checkpoints
+- `restore <id>` → restore specific checkpoint
+- `diff <id>` → compare current state with checkpoint
+
 ## Quick Reference
 
 | Command                    | Action                                |
 | -------------------------- | ------------------------------------- |
 | `/checkpoint`              | Show current checkpoint status        |
 | `/checkpoint save`         | Create new checkpoint                 |
+| `/checkpoint save --name <name>` | Create named checkpoint         |
 | `/checkpoint list`         | List all checkpoints                  |
 | `/checkpoint restore <id>` | Restore specific checkpoint           |
 | `/checkpoint diff <id>`    | Compare current state with checkpoint |

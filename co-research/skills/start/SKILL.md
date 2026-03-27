@@ -28,6 +28,10 @@ Every initiative follows the same 5-phase chain. Each command works independentl
 
 Plus **`/co-research:ws`** anytime to check progress and **`/co-research:wrapup`** before ending a session.
 
+## Workspace Resolution
+
+If `$ARGUMENTS` specifies a project name, focus on `workspaces/$ARGUMENTS/` for this session. Otherwise, check for existing workspaces and offer to create one.
+
 ## Getting Started
 
 Walk the user through these steps:

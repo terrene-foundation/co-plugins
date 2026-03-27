@@ -9,9 +9,10 @@ Welcome the user to this CO for Education workspace. This is a structured method
 
 ## First, check the workspace
 
-1. Look for a `workspaces/` directory in the current project folder
-2. If it exists, list any active projects (non-template subdirectories)
-3. If it does not exist, explain that the user needs to set up a workspace:
+1. If `$ARGUMENTS` specifies a project name, focus on `workspaces/$ARGUMENTS/`
+2. Otherwise, look for a `workspaces/` directory in the current project folder
+3. If workspaces exist, list any active projects (non-template subdirectories)
+4. If no workspaces exist, explain that the user needs to set up a workspace:
    ```
    cp -r workspaces/_template workspaces/my-course
    ```

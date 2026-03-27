@@ -8,7 +8,8 @@ Run comprehensive pre-submission validation on a publication document.
 /co-research:preflight [paper-path]
 ```
 
-If no path given, scan papers in the active workspace's drafts or submission directory.
+If `$ARGUMENTS` specifies a paper path, use that as the target document.
+If no arguments given, scan papers in the active workspace's drafts or submission directory.
 
 ## What This Does
 

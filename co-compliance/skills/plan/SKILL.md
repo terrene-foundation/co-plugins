@@ -7,6 +7,12 @@ description: Create a compliance assessment plan based on regulatory analysis. S
 
 Create a structured compliance assessment plan for the active project. This plan requires human approval before any assessment work begins.
 
+## Workspace Resolution
+
+1. If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/` (excluding `_template/`)
+3. If no workspace exists, ask the user to create one first
+
 ## Protocol
 
 1. **Read analysis outputs** from `01-research/`

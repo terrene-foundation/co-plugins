@@ -5,6 +5,14 @@ description: Review progress and learning. What has been accomplished, what patt
 
 # Checkpoint
 
+## Workspace Resolution
+
+1. If `$ARGUMENTS` specifies a project name, review `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/` (excluding `_template/`)
+3. If no workspace exists, ask the user to create one first
+
+## Protocol
+
 Review the current state of the project and learning:
 
 1. Read all journal entries from `journal/`

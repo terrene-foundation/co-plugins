@@ -7,6 +7,12 @@ description: Polish, validate, and prepare the final output. Last quality gate b
 
 Prepare the final output for delivery.
 
+## Workspace Resolution
+
+1. If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/` (excluding `_template/`)
+3. If no workspace exists, ask the user to create one first
+
 ## Protocol
 
 1. **Check all review issues are addressed** from `04-review/`

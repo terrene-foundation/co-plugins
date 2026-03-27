@@ -4,6 +4,15 @@
 
 Evolve learned instincts into actionable artifacts (skills, commands, agents).
 
+## Arguments
+
+`$ARGUMENTS` is parsed as the subcommand and target:
+- No arguments → show evolution candidates
+- `skill <instinct_id>` → evolve instinct into skill
+- `command <instinct_id>` → evolve instinct into command
+- `agent <instinct_id>` → evolve instinct into agent
+- `auto` → auto-evolve high-confidence instincts
+
 ## Quick Reference
 
 | Command                         | Action                                |

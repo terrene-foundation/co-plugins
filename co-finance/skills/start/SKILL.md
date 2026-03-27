@@ -37,6 +37,10 @@ COF is an AI-powered academic companion for finance students. It helps you resea
 
 Plus **`/ws`** anytime to check your project status.
 
+## Workspace Resolution
+
+If `$ARGUMENTS` specifies a project name, focus on `workspaces/$ARGUMENTS/` for this session. Otherwise, check for existing workspaces and offer to create one.
+
 ## Getting Started
 
 Walk the student through these steps:

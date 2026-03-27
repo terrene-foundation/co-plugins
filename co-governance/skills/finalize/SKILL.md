@@ -7,6 +7,12 @@ description: Polish, validate against constitution, and prepare governance artif
 
 Prepare the final governance artifact for filing, publication, or formal adoption.
 
+## Workspace Resolution
+
+1. If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/` (excluding `_template/`)
+3. If no workspace exists, ask the user to create one first
+
 ## Protocol
 
 1. **Check all review issues are addressed** from `04-review/`

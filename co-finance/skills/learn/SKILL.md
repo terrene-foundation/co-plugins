@@ -4,6 +4,15 @@
 
 Interact with the Continuous Learning System to view, analyze, and evolve learned patterns.
 
+## Arguments
+
+`$ARGUMENTS` is parsed as the subcommand:
+- No arguments → show learning status and statistics
+- `stats` → show detailed observation statistics
+- `analyze` → analyze observations for patterns
+- `generate` → generate instincts from patterns
+- `list` → list all learned instincts
+
 ## Quick Reference
 
 | Command           | Action                               |
