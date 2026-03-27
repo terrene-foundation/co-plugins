@@ -42,8 +42,9 @@ Parse `$ARGUMENTS`:
 type: [TYPE]
 date: [today's date, YYYY-MM-DD]
 created_at: [ISO-8601 timestamp, e.g. 2026-03-27T14:23:17Z]
-author: [human | agent | co-authored — based on who drove the insight]
+author: [human | agent | co-authored — see attribution rules below]
 session_id: [current session ID if available, otherwise omit]
+session_turn: [approximate conversation turn number when this entry was created]
 project: [workspace name]
 topic: [topic description]
 phase: [current phase: analyze | plan | execute | review | finalize]
@@ -56,7 +57,7 @@ tags: []
 
 ## For Discussion
 
-[Generate 2-3 questions an assessor or collaborator might ask about this entry, based on the actual content and decision context. These should probe the reasoning, not just restate facts.]
+[Generate 2-3 questions — see discussion rules below]
 ```
 
 4. Type-specific structure:
@@ -68,14 +69,21 @@ tags: []
    - **CONNECTION**: Sections for Connection, Components Linked, Why This Matters
    - **GAP**: Sections for What Is Missing, Why It Matters, How to Resolve
 
-5. The `author` field reflects who drove the insight:
-   - `human` — the user identified this insight, the AI recorded it
-   - `agent` — the AI surfaced this insight during analysis
-   - `co-authored` — emerged through dialogue; neither party alone would have reached it
+5. **Attribution rules** — the `author` field uses this decision tree:
+   - `human` — the user **stated** the conclusion, direction, or choice before the AI elaborated on it. The test: would this insight exist if the AI had said nothing? If yes → `human`.
+   - `agent` — the AI surfaced this insight **unprompted** or in response to an open-ended request ("what should I watch out for?"). The test: did the user know this before the AI said it? If no → `agent`.
+   - `co-authored` — the insight **evolved through exchange** — the user started in one direction, the AI added information, the user revised, and the final insight differs from both starting points. The test: can you attribute it to one party? If no → `co-authored`.
+   - When uncertain, prefer `co-authored` over `human`. Over-crediting the user is worse than under-crediting — it creates false evidence of understanding.
 
-6. The `## For Discussion` section scaffolds metacognition and prepares for oral follow-up. Generate questions specific to the entry content — not generic templates.
+6. **`session_turn`** — estimate the conversation turn number. This creates a temporal fingerprint: entries within a session should show increasing turn numbers. Gaps are normal (not every turn produces a journal entry), but decreasing numbers within a session indicate post-hoc insertion.
 
-7. After creating, confirm with the entry number and path.
+7. **"For Discussion" rules** — generate questions that meet ALL of these criteria:
+   - At least one question must reference **specific data, sources, or constraints** mentioned in the entry (not abstractable)
+   - At least one question must be a **counterfactual** ("If X had been different, would you still...")
+   - Questions must NOT follow the same pattern across entries — vary the structure (compare, challenge assumption, extend to new context, invert premise, ask for evidence)
+   - The questions should be ones the **user can answer only if they genuinely engaged** with the decision
+
+8. After creating, confirm with the entry number and path.
 
 ---
 
