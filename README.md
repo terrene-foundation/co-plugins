@@ -11,12 +11,13 @@ Cognitive Orchestration (CO) plugins for Claude Desktop Cowork. One marketplace,
 5. Select **Add marketplace from GitHub**
 6. Enter: `terrene-foundation/co-plugins`
 
-All six CO domain plugins will appear in your plugin list. Install the ones you need.
+All seven CO domain plugins will appear in your plugin list. Install the ones you need.
 
 ## Available plugins
 
 | Plugin | Domain | What it does |
 |---|---|---|
+| **co-learners** | Any subject | Subject-agnostic academic companion for research, writing, and study |
 | **co-research** | Academic research | Co-author papers with citation integrity and hostile reviewer simulation |
 | **co-finance** | Finance education | Study guides, case analysis, exam prep, financial research |
 | **co-education** | Education | Design assessments and rubrics that account for AI use |
@@ -32,6 +33,7 @@ Download the workspace for your domain:
 
 | Domain | Download |
 |---|---|
+| Any subject | [co-learners](https://github.com/terrene-foundation/co-learners) (click Code > Download ZIP) |
 | Research | [co-research](https://github.com/terrene-foundation/co-research) (click Code > Download ZIP) |
 | Finance | [co-finance](https://github.com/terrene-foundation/co-finance) (click Code > Download ZIP) |
 | Education | [co-education](https://github.com/terrene-foundation/co-education) (click Code > Download ZIP) |
