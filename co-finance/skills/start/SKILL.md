@@ -27,29 +27,30 @@ COF is an AI-powered academic companion for finance students. It helps you resea
 
 ## The Academic Workflow
 
-| Step        | Command        | What Happens                                            | Your Role                                     |
-| ----------- | -------------- | ------------------------------------------------------- | --------------------------------------------- |
-| 1. Research | `/analyze`     | Deep research on your topic — sources, theories, data   | Confirm the research direction is right        |
-| 2. Planning | `/todos`       | Plan your deliverables — outline, sections, timeline    | Approve the plan before drafting starts        |
-| 3. Drafting | `/assignment` or `/thesis` | Work through the project section by section | Make the analytical decisions as you go        |
-| 4. Review   | `/challenge`   | Stress-test your arguments like a tough professor would | Review the feedback and strengthen weak points |
-| 5. Save     | `/wrapup`      | Save progress so the next session picks up where you left off | Confirm the summary is accurate          |
+| Step        | Command                    | What Happens                                                  | Your Role                                      |
+| ----------- | -------------------------- | ------------------------------------------------------------- | ---------------------------------------------- |
+| 1. Research | `/analyze`                 | Deep research on your topic — sources, theories, data         | Confirm the research direction is right        |
+| 2. Planning | `/todos`                   | Plan your deliverables — outline, sections, timeline          | Approve the plan before drafting starts        |
+| 3. Drafting | `/assignment` or `/thesis` | Work through the project section by section                   | Make the analytical decisions as you go        |
+| 4. Review   | `/challenge`               | Stress-test your arguments like a tough professor would       | Review the feedback and strengthen weak points |
+| 5. Save     | `/wrapup`                  | Save progress so the next session picks up where you left off | Confirm the summary is accurate                |
 
 Plus **`/ws`** anytime to check your project status.
 
-## Workspace Resolution
-
-If `$ARGUMENTS` specifies a project name, focus on `workspaces/$ARGUMENTS/` for this session. Otherwise, check for existing workspaces and offer to create one.
-
 ## Getting Started
 
-Walk the student through these steps:
+Ask the student:
 
-1. **Create a workspace**: Ask the AI to set up a workspace for your project (e.g., "create a workspace called macro-policy-paper"), or manually create a folder `workspaces/my-project/briefs/`
-2. **Describe your assignment**: Create a file in the briefs folder describing the assignment, research question, or topic you want to work on — in your own words. Include what course it is for, what the deliverable is (essay, presentation, problem set, thesis), any requirements from your professor, and the deadline. You can also just tell the AI what you need and ask it to write the brief for you.
-3. **Run `/analyze`**: This kicks off the research phase
+1. **What course is this for?** (e.g., FNCE101, Corporate Finance, International Finance)
+2. **What are you working on?** (assignment, paper, exam prep, presentation)
+3. **What's the deadline?**
 
-If the student already has a workspace, show them their current status with `/ws` instead.
+Based on their answer, recommend the right starting command:
+
+- Writing a paper or assignment? Start with `/analyze` then `/todos`
+- Studying for an exam? Start with `/exam-prep`
+- Need to understand a concept? Start with `/explain` or `/study`
+- Working on a presentation? Start with `/present`
 
 ## Helpful Commands
 
