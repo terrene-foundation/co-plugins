@@ -1,5 +1,5 @@
 ---
-name: challenge
+name: redteam
 description: "Stress-test your arguments and analysis from a critical perspective"
 ---
 
