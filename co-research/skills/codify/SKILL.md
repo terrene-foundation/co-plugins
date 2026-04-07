@@ -77,7 +77,7 @@ If significant knowledge was gained that applies across sessions:
 
 - Update auto-memory with key patterns and decisions
 - Ensure the anti-amnesia rules are still accurate
-- Update learned-instincts if new patterns were confirmed
+- Update relevant rules or skills if new patterns were confirmed
 
 ### 6. Present captured knowledge
 
